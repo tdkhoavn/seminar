@@ -1,0 +1,23 @@
+version: "3"
+services:
+  seminar-webserver:
+    image: webdevops/php-nginx-dev:7.4-alpine
+    container_name: seminar_dev
+    environment:
+      - PHP_DISPLAY_ERRORS=1
+      - PHP_DATE_TIMEZONE=Asia/Tokyo
+      - WEB_DOCUMENT_ROOT=/app/public
+      - COMPOSER_VERSION=2
+    networks:
+      - docker-net
+    volumes:
+      - .:/app
+      - ./docker/custom.conf:/opt/docker/etc/nginx/vhost.common.d/custom.conf
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.seminar-webserver.rule=Host(`seminar.tdkhoa.test`)"
+      - "traefik.http.routers.seminar-webserver.tls=true"
+      - "traefik.http.routers.seminar-webserver.entrypoints=websecure"
+networks:
+  docker-net:
+    external: true
