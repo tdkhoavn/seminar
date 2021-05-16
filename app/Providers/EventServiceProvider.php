@@ -6,6 +6,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use App\Events\InvoiceProcessed;
+use App\Listeners\StoreInvoice2DB;
+use App\Listeners\ExportInvoice2PDF;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +21,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        InvoiceProcessed::class => [
+            StoreInvoice2DB::class,
+            ExportInvoice2PDF::class,
+        ]
     ];
 
     /**
